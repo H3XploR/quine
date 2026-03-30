@@ -53,7 +53,9 @@ static char *escape_double_quote(const char *str)
     return out;
 }
 
-static into_insert_section(void)
+static int insert_into_section(FILE* file, const char* toInsert, int nbLine){
+	
+}
 
 int main(int argc, char **argv)
 {
