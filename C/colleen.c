@@ -2,7 +2,8 @@
 /*	Le commentaire en dehores du programme	*/
 
 void	the_fonction_needed(void){
-	printf("YO\n");
+	//BEGIN
+	//END
 	return;
 }
 
