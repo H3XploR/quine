@@ -78,6 +78,7 @@ static int search_end(FILE* file){
 }
 
 static int insert_into_section(FILE* file, const char* name_out, const char* toInsert){
+	fseek(file, 0, SEEK_SET);
 	if (strlen(name_out) > 48)
 		return -1;
 	int end = search_end(file);
@@ -98,7 +99,7 @@ static int insert_into_section(FILE* file, const char* name_out, const char* toI
 	size_t rded = 0;
 	while (1){
 		if (count == end)
-			fprintf(out, "%s\n", toInsert);
+			fprintf(out, "%s", toInsert);
 		if (getline(&line, &rded, file) == -1)
 			break;
 		fprintf(out, "%s", line);
@@ -106,7 +107,7 @@ static int insert_into_section(FILE* file, const char* name_out, const char* toI
 		line = NULL;
 		count++;
 	}
-
+/*	FAIRE LE QUINE AUTOMATIQUE	*/
 	fclose(out);
 	return 0;
 }
@@ -121,7 +122,7 @@ int main(int argc, char **argv)
     size_t rded = 0;
     if (!in)
         return 1;
-    insert_into_section(in, argv[1], "INSERTED");
+    insert_into_section(in, argv[1], "INSERTED\n");
     free(line);
     fclose(in);
     return 0;
