@@ -1,9 +1,9 @@
 #include <stdio.h>
-/*	Le commentaire en dehores du programme	*/
+/*	Le commentaire en dehores du programme */
 
 void	the_fonction_needed(void){
-	const char* str = "#include <stdio.h>\n/*	Le commentaire en dehores du programme */\n\nvoid	the_fonction_needed(void){\n	const char* str = %c%s%c\n	printf(str, 34, str, 34);\n	return;\n}\n\nint	main(void){\n/*	LA FONCTION PRINCIPALE	*/\n	the_fonction_needed();\n	return 0;\n}\n";
-	printf(str, 34, str, 34);
+	const char* str = "#include <stdio.h>%c/*%cLe commentaire en dehores du programme */%c%cvoid%cthe_fonction_needed(void){%c%cconst char* str = %c%s%c;%c%cprintf(str, 10, 9, 10, 10, 9, 10, 9, 34, str, 34, 10, 9, 10, 9, 10, 10, 10, 9,10, 9, 9, 10, 9, 10, 9, 10, 10);%c%creturn;%c}%c%cint%cmain(void){%c/*%cLA FONCTION PRINCIPALE%c*/%c%cthe_fonction_needed();%c%creturn 0;%c}%c";
+	printf(str, 10, 9, 10, 10, 9, 10, 9, 34, str, 34, 10, 9, 10, 9, 10, 10, 10, 9,10, 9, 9, 10, 9, 10, 9, 10, 10);
 	return;
 }
 
