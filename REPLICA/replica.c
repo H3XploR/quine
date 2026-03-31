@@ -54,7 +54,7 @@ static char *escape_double_quote(const char *str)
     return out;
 }
 
-static int search_end(FILE* file){
+static int search_landmark(FILE* file){
 	fseek(file, 0, SEEK_SET);
 	char* line = NULL;
 	size_t rded = 0;
@@ -62,7 +62,7 @@ static int search_end(FILE* file){
 	int line_count = 0;
 	while (getline(&line, &rded, file) != -1) {
 		printf("%s", line);
-		found = strstr(line, "//END"); 
+		found = strstr(line, "//LANDMARK"); 
 		if (found != NULL)
 		{
 			printf("MOTIF TROUVE: ligne %d\n", line_count);
@@ -77,39 +77,55 @@ static int search_end(FILE* file){
 	return -1;
 }
 
-static int insert_into_section(FILE* file, const char* name_out, const char* toInsert){
+static int insert_into_section(char* arg, const char* name_out){
+    	FILE *file = fopen(arg, "r");
 	fseek(file, 0, SEEK_SET);
-	if (strlen(name_out) > 48)
-		return -1;
-	int end = search_end(file);
-	char name_concat[50] = {0};
-	for (int i = 0; name_out[i] != 0; i++){
-		name_concat[i] = name_out[i];
-		if (name_out[i + 1] == 0){
-			name_concat[i + 1] = '.';
-			name_concat[i + 2] = 'i';
-		}
-	}
-	printf("%s: name_concat for the moment: %s\n", __FUNCTION__, name_concat);
-	FILE* out = fopen(name_concat, "w");
-	printf("%s: ecriture du fichier avec %s a insere a la ligne %d\n", __FUNCTION__, toInsert, end);
+	int landmark= search_landmark(file);
+
+	FILE* out = fopen(name_out, "a+");
 	fseek(file, 0, SEEK_SET);
 	int count = 0;
 	char* line = NULL;
 	size_t rded = 0;
-	while (1){
-		if (count == end)
-			fprintf(out, "%s", toInsert);
-		if (getline(&line, &rded, file) == -1)
-			break;
+	char* toInsert = NULL;
+	printf("%s: quining begining\n", __FUNCTION__);
+	while(1){
+		
+	}
+	fclose(out);
+	return 0;
+}
+
+static char* create_name_out(const char* fileToBeCloned){
+	if (strlen(fileToBeCloned) > 48)
+		return NULL;
+	char *name_concat = malloc(50);
+	name_concat[0] = 0;
+	for (int i = 0; fileToBeCloned[i] != 0; i++){
+		name_concat[i] = fileToBeCloned[i];
+		if (fileToBeCloned[i + 1] == 0){
+			name_concat[i + 1] = '.';
+			name_concat[i + 2] = 'i';
+		}
+	}
+	return name_concat;
+}
+
+static void cloning_file(char* fileToBeCloned, char* name_out){
+	FILE* in = fopen(fileToBeCloned, "r");
+	FILE* out = fopen(name_out, "w");
+	char* line = NULL;
+	size_t rded = 0;
+	int line_count = 0;
+	while (getline(&line, &rded, in) != -1) {
 		fprintf(out, "%s", line);
 		free(line);
 		line = NULL;
-		count++;
+		line_count++;
 	}
-/*	FAIRE LE QUINE AUTOMATIQUE	*/
+	printf("%s: clonage finis\n", __FUNCTION__);
+	free(line);
 	fclose(out);
-	return 0;
 }
 
 int main(int argc, char **argv)
@@ -117,13 +133,8 @@ int main(int argc, char **argv)
     if (argc != 2)
         return 1;
 
-    FILE *in = fopen(argv[1], "r+");
-    char* line = NULL;
-    size_t rded = 0;
-    if (!in)
-        return 1;
-    insert_into_section(in, argv[1], "INSERTED\n");
-    free(line);
-    fclose(in);
+    char* name_out = create_name_out(argv[1]);
+    cloning_file(argv[1], name_out);
+    //insert_into_section(argv[1], name_out);
     return 0;
 }
