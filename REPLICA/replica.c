@@ -77,7 +77,7 @@ static int search_end(FILE* file){
 	return -1;
 }
 
-static int insert_into_section(FILE* file, const char* name_out, const char* toInsert, int nbLine){
+static int insert_into_section(FILE* file, const char* name_out, const char* toInsert){
 	if (strlen(name_out) > 48)
 		return -1;
 	int end = search_end(file);
@@ -91,12 +91,22 @@ static int insert_into_section(FILE* file, const char* name_out, const char* toI
 	}
 	printf("%s: name_concat for the moment: %s\n", __FUNCTION__, name_concat);
 	FILE* out = fopen(name_concat, "w");
-	if (end != -1){
-		printf("%s: end recupere\n", __FUNCTION__);
+	printf("%s: ecriture du fichier avec %s a insere a la ligne %d\n", __FUNCTION__, toInsert, end);
+	fseek(file, 0, SEEK_SET);
+	int count = 0;
+	char* line = NULL;
+	size_t rded = 0;
+	while (1){
+		if (count == end)
+			fprintf(out, "%s\n", toInsert);
+		if (getline(&line, &rded, file) == -1)
+			break;
+		fprintf(out, "%s", line);
+		free(line);
+		line = NULL;
+		count++;
 	}
-	else{
-		printf("%s: end non trouve\n", __FUNCTION__);
-	}
+
 	fclose(out);
 	return 0;
 }
@@ -111,15 +121,7 @@ int main(int argc, char **argv)
     size_t rded = 0;
     if (!in)
         return 1;
-    while (1){
-	if (getline(&line, &rded, in) == -1)
-		break;
-	//printf("%s", line);
-	free(line);
-	line = NULL;
-    }
-    int end_line_count = search_end(in);
-    insert_into_section(in, argv[1], "INSERTED", end_line_count);
+    insert_into_section(in, argv[1], "INSERTED");
     free(line);
     fclose(in);
     return 0;
