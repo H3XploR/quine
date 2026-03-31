@@ -90,7 +90,7 @@ static int insert_into_section(FILE* file, const char* name_out, const char* toI
 		}
 	}
 	printf("%s: name_concat for the moment: %s\n", __FUNCTION__, name_out);
-	FILE* out = fopen(name_out, "w");
+	FILE* out = fopen(name_concat, "w");
 	if (end != -1){
 		printf("%s: end recupere\n", __FUNCTION__);
 	}
