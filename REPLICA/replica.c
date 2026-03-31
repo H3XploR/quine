@@ -88,10 +88,9 @@ static int insert_into_section(char* arg, const char* name_out){
 	char* line = NULL;
 	size_t rded = 0;
 	char* toInsert = NULL;
+	int nbLineLandMark = search_landmark(out);
 	printf("%s: quining begining\n", __FUNCTION__);
-	while(1){
-		
-	}
+
 	fclose(out);
 	return 0;
 }
@@ -135,6 +134,6 @@ int main(int argc, char **argv)
 
     char* name_out = create_name_out(argv[1]);
     cloning_file(argv[1], name_out);
-    //insert_into_section(argv[1], name_out);
+    insert_into_section(argv[1], name_out);
     return 0;
 }
