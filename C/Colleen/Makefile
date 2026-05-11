@@ -1,4 +1,4 @@
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test
 
 all: Colleen
 
@@ -15,3 +15,6 @@ fclean: clean
 	rm -f Colleen
 
 re: fclean all
+
+test:
+	./Colleen > tmp_Colleen ; diff tmp_Colleen Colleen.c
