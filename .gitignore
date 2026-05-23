@@ -53,4 +53,8 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# nuisible
 C/Grace/tmp_Grace
+C/Sully/Sully_*
+C/Sully/Sully
